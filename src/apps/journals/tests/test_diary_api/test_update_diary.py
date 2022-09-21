@@ -66,3 +66,37 @@ def test_update_diary(api_client_with_user, diary):
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == expected
 
+
+@pytest.mark.parametrize('auth_data', AUTH_DATA)
+def test_update_diary_with_wrong_kind(api_client_with_user, diary):
+    user = api_client_with_user.handler._force_user
+    diary.user = user
+    diary.save()
+
+    payload = {
+        'title': mixer.faker.word().title(),
+        'kind': mixer.faker.word().title(),
+        'expiration': mixer.faker.date()
+    }
+    tmp_url = reverse('api:journals:diary-detail', args=(diary.id,))
+    response = api_client_with_user.put(tmp_url, data=payload)
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.parametrize('auth_data', AUTH_DATA)
+def test_update_to_public_diary_with_expiration(api_client_with_user, diary):
+    user = api_client_with_user.handler._force_user
+    diary.user = user
+    diary.kind = DiaryTypes.PRIVATE
+    diary.save()
+
+    payload = {
+        'title': mixer.faker.word().title(),
+        'kind': DiaryTypes.PUBLIC,
+        'expiration': mixer.faker.date()
+    }
+    tmp_url = reverse('api:journals:diary-detail', args=(diary.id,))
+    response = api_client_with_user.put(tmp_url, data=payload)
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
