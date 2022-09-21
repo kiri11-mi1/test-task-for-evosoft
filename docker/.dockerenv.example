@@ -1,0 +1,8 @@
+SECRET_KEY=ver very secret key
+DEBUG=True
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+

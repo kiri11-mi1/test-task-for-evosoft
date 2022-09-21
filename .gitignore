@@ -1,0 +1,14 @@
+/client/build
+/src/staticfiles
+/src/media
+.DS_Store
+.idea
+.vscode
+*.log
+*.pyc
+**/__pycache__/
+*.sql
+*.7z
+/pg_data
+*.dockerenv
+volumes/

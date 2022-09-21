@@ -1,0 +1,40 @@
+version: "3"
+services:
+  db:
+    image: postgres:14.1-alpine
+    container_name: template_db
+    env_file: docker/.dockerenv
+    restart: always
+    volumes:
+      - ./volumes/db/data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      args:
+        - DEBUG=${DEBUG}
+    container_name: template_app
+    env_file: docker/.dockerenv
+    restart: always
+    volumes:
+      - ./src:/src
+      - ./volumes/media:/media
+      - ./volumes/static:/src/staticfiles
+    depends_on:
+      - db
+    command: gunicorn --bind 0.0.0.0:8000 --timeout 600 --log-level debug --reload
+      --workers 4 config.wsgi:application
+
+  nginx:
+    image: nginx:1.21.4-alpine
+    container_name: template_nginx
+    restart: always
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d
+      - ./volumes/static:/var/www/static
+      - ./volumes/media:/var/www/media
+    depends_on:
+      - app
+    ports:
+      - "80:80"
