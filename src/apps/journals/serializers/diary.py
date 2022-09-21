@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from ..models import Diary
 from ..constants import DiaryTypes, DiaryErrors
+from ...users.serializers import UserSummarySerializer
 
 
 class DiaryCreateSerializer(serializers.ModelSerializer):
@@ -25,7 +26,7 @@ class DiaryCreateSerializer(serializers.ModelSerializer):
 
 
 class DiaryReadSerializer(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    user = UserSummarySerializer()
 
     class Meta:
         model = Diary
