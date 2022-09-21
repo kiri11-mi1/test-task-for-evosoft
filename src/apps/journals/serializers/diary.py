@@ -5,7 +5,8 @@ from ..constants import DiaryTypes, DiaryErrors
 from ...users.serializers import UserSummarySerializer
 
 
-class DiaryCreateSerializer(serializers.ModelSerializer):
+class DiarySerializer(serializers.ModelSerializer):
+    user = UserSummarySerializer(required=False)
 
     def validate(self, data: dict):
         expiration = data.get('expiration')
@@ -13,7 +14,7 @@ class DiaryCreateSerializer(serializers.ModelSerializer):
 
         if not expiration and self.instance:
             expiration = self.instance.expiration
-    
+
         if expiration and kind == DiaryTypes.PUBLIC:
             raise serializers.ValidationError(DiaryErrors.ONLY_PRIVATE)
 
@@ -29,14 +30,6 @@ class DiaryCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data: dict):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
-
-    class Meta:
-        model = Diary
-        fields = ('id', 'title', 'kind', 'expiration',)
-
-
-class DiaryReadSerializer(serializers.ModelSerializer):
-    user = UserSummarySerializer()
 
     class Meta:
         model = Diary
