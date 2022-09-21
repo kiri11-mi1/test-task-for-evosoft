@@ -19,6 +19,19 @@ AUTH_DATA = [
 ]
 
 
+@pytest.mark.parametrize('auth_data', AUTH_DATA)
+def test_create_diary_with_wrong_kind_value(api_client_with_user):
+    payload = {
+        'title': mixer.faker.word().title(),
+        'kind': mixer.faker.word().title(),
+        'expiration': mixer.faker.date()
+    }
+    tmp_url = reverse('api:journals:diary-list')
+    response = api_client_with_user.post(tmp_url, data=payload)
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
 def test_create_diary_by_anon_user(api_client):
     payload = {
         'title': mixer.faker.word().title(),
