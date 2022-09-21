@@ -6,9 +6,10 @@ from ..models import User
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
+    list_display = ('login', 'is_superuser')
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2'),
+            'fields': ('login', 'password1', 'password2'),
         }),
     )

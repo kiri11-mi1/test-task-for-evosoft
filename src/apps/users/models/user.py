@@ -4,12 +4,12 @@ from rest_framework.authtoken.models import Token
 
 
 class User(AbstractUser):
-    email = models.EmailField(
+    login = models.EmailField(
         unique=True,
-        verbose_name='Email',
+        verbose_name='Login',
     )
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'login'
     REQUIRED_FIELDS = ['username']
 
     class Meta:
@@ -17,7 +17,7 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self) -> str:
-        return f'{self.username} ({self.email})'
+        return self.login
 
     def save(self, *args, **kwargs):
         is_created = self.id is None
