@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from .viewsets import DiaryViewSet
+from .viewsets import DiaryViewSet, NoteViewSet
 
 journals_router = DefaultRouter()
 
@@ -9,8 +9,8 @@ journals_router.register(
     viewset=DiaryViewSet,
     basename='diary',
 )
-# journals_router.register(
-#     prefix='categories',
-#     viewset=TransactionCategoryViewSet,
-#     basename='categories',
-# )
+journals_router.register(
+    prefix='note',
+    viewset=NoteViewSet,
+    basename='note',
+)
