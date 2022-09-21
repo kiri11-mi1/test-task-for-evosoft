@@ -19,6 +19,18 @@ AUTH_DATA = [
 ]
 
 
+def test_create_diary_by_anon_user(api_client):
+    payload = {
+        'title': mixer.faker.word().title(),
+        'kind': DiaryTypes.PRIVATE,
+        'expiration': mixer.faker.date()
+    }
+    tmp_url = reverse('api:journals:diary-list')
+    response = api_client.post(tmp_url, data=payload)
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
 @pytest.mark.parametrize('auth_data', AUTH_DATA)
 def test_create_private_diary_with_expiration(api_client_with_user):
     payload = {
