@@ -31,15 +31,14 @@ def test_user_me(api_client_with_user):
 
 
 def test_user_login(api_client):
-    password = mixer.faker.password()
-    user = mixer.blend(get_user_model())
-    user.set_password(password)
-    user.save()
-
     payload = {
-        'email': user.email,
-        'password': password
+        'login': mixer.faker.email(),
+        'password': mixer.faker.password()
     }
+
+    user = mixer.blend(get_user_model(), login=payload['login'])
+    user.set_password(payload['password'])
+    user.save()
 
     tmp_url = reverse('api:auth:token')
     response = api_client.post(tmp_url, data=payload)
@@ -53,7 +52,7 @@ def test_user_register(api_client):
     username = mixer.faker.word().title()
 
     payload = {
-        'email': email,
+        'login': email,
         'username': username,
         'password': password
     }
