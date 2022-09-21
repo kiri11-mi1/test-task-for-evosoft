@@ -7,6 +7,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 
+pytest_plugins = [
+    'apps.journals.tests.fixtures',
+]
+
 @pytest.fixture
 def api_client() -> APIClient:
     """
