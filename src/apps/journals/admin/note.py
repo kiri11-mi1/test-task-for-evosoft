@@ -5,4 +5,5 @@ from ..models import Note
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    search_fields = ('text', 'diary',)
+    list_filter = ('diary__title',)
+    search_fields = ('text',)
