@@ -26,9 +26,9 @@ def diaries_with_expiration():
 
 @pytest.fixture
 def note():
-    return mixer.blend(Note)
+    return mixer.blend(Note, diary=mixer.blend(Diary))
 
 
 @pytest.fixture
 def notes():
-    return mixer.cycle(5).blend(Note)
+    return mixer.cycle(5).blend(Note, diary=mixer.blend(Diary))
