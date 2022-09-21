@@ -1,4 +1,4 @@
-from django_filters import rest_framework as filters, CharFilter, ChoiceFilter, DateFilter
+from django_filters import rest_framework as filters, CharFilter
 
 from ..models import Note
 
