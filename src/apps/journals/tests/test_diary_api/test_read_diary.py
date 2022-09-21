@@ -4,7 +4,7 @@ from mixer.backend.django import mixer
 from rest_framework import status
 
 
-from ...serializers import DiaryReadSerializer
+from ...serializers import DiarySerializer
 
 
 pytestmark = [pytest.mark.django_db]
@@ -27,7 +27,7 @@ def test_get_diary_by_anon_user(api_client):
 
 @pytest.mark.parametrize('auth_data', AUTH_DATA)
 def test_get_all_diary(api_client_with_user, diaries):
-    data = DiaryReadSerializer(diaries, many=True).data
+    data = DiarySerializer(diaries, many=True).data
     expected = {
         'count': len(diaries),
         'next': None,
@@ -43,7 +43,7 @@ def test_get_all_diary(api_client_with_user, diaries):
 
 @pytest.mark.parametrize('auth_data', AUTH_DATA)
 def test_get_one_diary(api_client_with_user, diary):
-    expected = DiaryReadSerializer(diary).data
+    expected = DiarySerializer(diary).data
     tmp_url = reverse('api:journals:diary-detail', args=(diary.id,))
     response = api_client_with_user.get(tmp_url)
 
