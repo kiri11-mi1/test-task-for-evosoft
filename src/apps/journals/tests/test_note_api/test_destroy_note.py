@@ -27,11 +27,8 @@ def test_delete_note_by_anon_user(api_client, note):
 
 @pytest.mark.parametrize('auth_data', AUTH_DATA)
 def test_delete_note(api_client_with_user, note, diary):
-    user = api_client_with_user.handler._force_user
-    diary.user = user
-    diary.save()
-
-    note.diary = diary
+    note.diary.user = api_client_with_user.handler._force_user
+    note.diary.save()
     note.save()
 
     tmp_url = reverse('api:journals:note-detail', args=(note.id,))
