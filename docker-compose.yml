@@ -23,6 +23,7 @@ services:
       - ./volumes/static:/src/staticfiles
     depends_on:
       - db
+      - redis
     command: gunicorn --bind 0.0.0.0:8000 --timeout 600 --log-level debug --reload
       --workers 4 config.wsgi:application
 
@@ -38,3 +39,23 @@ services:
       - app
     ports:
       - "80:80"
+
+  redis:
+    image: redis:5-alpine
+
+  celery:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      args:
+        - DEBUG=${DEBUG}
+    container_name: test_task_celery
+    restart: always
+    command: celery worker -A config -l info -B -c 4
+    volumes:
+      - ./src:/src
+    env_file:
+      - docker/.dockerenv
+    depends_on:
+      - app
+      - redis

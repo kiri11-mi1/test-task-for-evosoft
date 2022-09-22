@@ -2,6 +2,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).parents[2]
 SECRET_KEY = os.environ.get('SECRET_KEY')
 ROOT_URLCONF = 'config.urls'
@@ -182,6 +184,26 @@ SWAGGER_SETTINGS = {
 ##################################################################
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+##################################################################
+# Celery settings
+##################################################################
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_BACKEND', 'redis://redis:6379/0')
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# SCHEDULE_IS_USING = os.environ.get('CELERY_SCHEDULE_IS_USING', 'False')
+#
+# if SCHEDULE_IS_USING.lower() == 'true':
+#     SCHEDULE_MINUTE_TIME = os.environ.get('CELERY_SCHEDULE_MINUTE_TIME', '1')
+#     CELERYBEAT_SCHEDULE = {
+#         f'auto-restart-avatar-every-{SCHEDULE_MINUTE_TIME}-minute': {
+#             'task': 'apps.avatar.tasks.auto_restart_avatar',
+#             'schedule': crontab(minute=f'*/{SCHEDULE_MINUTE_TIME}'),
+#         }
+#     }
 
 ##################################################################
 # Debug toolbar settings
