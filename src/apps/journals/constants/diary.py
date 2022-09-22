@@ -1,5 +1,7 @@
 from typing import Final
 
+TIME_DELETING_OLD_DIARY = 10.0*60.0
+
 
 class DiaryTypes:
     PUBLIC: Final[str] = 'public'

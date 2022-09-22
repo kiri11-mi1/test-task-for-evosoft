@@ -12,5 +12,7 @@ app.autodiscover_tasks(packages=['apps'])
 def setup_periodic_tasks(sender, **kwargs):
     # Calls test('hello') every 10 seconds.
     from apps.journals.tasks import delete_old_diary
-    sender.add_periodic_task(10.0, delete_old_diary.s())
+    from apps.journals.constants import TIME_DELETING_OLD_DIARY
+
+    sender.add_periodic_task(TIME_DELETING_OLD_DIARY, delete_old_diary.s())
 
